@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETQAN + ROSA | نظام إدارة الأجهزة</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<!-- مكتبة الـ QR الجديدة والمضمونة -->
+<!-- مكتبة الـ QR -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
 <style>
@@ -18,9 +18,7 @@
   --text-muted: #7f8c8d;
   --border-color: #e0e6ed;
 }
-
 * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
-
 body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; min-height: 100vh; }
 .container { max-width: 1400px; margin: auto; }
 
@@ -32,60 +30,31 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
   border-top: 4px solid var(--secondary);
 }
 .logo-area { display: flex; align-items: center; gap: 20px; }
-.logo-img { height: 60px; object-fit: contain; }
 .header-text h1 { font-size: 22px; color: var(--primary); font-weight: 700; }
 .header-text p { font-size: 12px; color: var(--secondary); font-weight: 600; letter-spacing: 1px; }
 .date-badge { background: #e8f0fe; color: var(--primary); padding: 8px 16px; border-radius: 30px; font-weight: 600; font-size: 14px; }
 
 /* إحصائيات */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-.stat {
-  background: var(--card-bg); padding: 20px; border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.04); display: flex; align-items: center; gap: 15px;
-  border-right: 4px solid var(--primary);
-}
+.stat { background: var(--card-bg); padding: 20px; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.04); display: flex; align-items: center; gap: 15px; border-right: 4px solid var(--primary); }
 .stat-icon { font-size: 28px; }
 .stat-info span { display: block; font-size: 26px; font-weight: 900; color: var(--primary); line-height: 1; }
 .stat-info label { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
 /* أدوات */
-.toolbar {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  background: var(--card-bg); padding: 15px; border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.04); margin-bottom: 25px;
-  align-items: center;
-}
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; background: var(--card-bg); padding: 15px; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.04); margin-bottom: 25px; align-items: center; }
 .search-box { position: relative; flex: 2; min-width: 250px; }
 .search-box .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999; }
 .search-box input { width: 100%; padding: 12px 40px 12px 15px; border: 1px solid var(--border-color); border-radius: 10px; font-family: 'Cairo'; font-size: 14px; background: #f9fbfd; }
 .search-box input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(11,61,145,.1); }
-.toolbar select {
-  padding: 12px 15px; border: 1px solid var(--border-color);
-  border-radius: 10px; font-family: 'Cairo'; font-size: 14px;
-  background: #f9fbfd; flex: 1; min-width: 140px; cursor: pointer;
-}
+.toolbar select { padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 10px; font-family: 'Cairo'; font-size: 14px; background: #f9fbfd; flex: 1; min-width: 140px; cursor: pointer; }
 .toolbar select:focus { outline: none; border-color: var(--primary); }
-.btn-print {
-  padding: 12px 20px; border: none; border-radius: 10px;
-  background: var(--primary); color: #fff; cursor: pointer;
-  font-family: 'Cairo'; font-weight: 700; font-size: 14px;
-  transition: .3s; display: flex; align-items: center; gap: 8px;
-}
+.btn-print { padding: 12px 20px; border: none; border-radius: 10px; background: var(--primary); color: #fff; cursor: pointer; font-family: 'Cairo'; font-weight: 700; font-size: 14px; transition: .3s; display: flex; align-items: center; gap: 8px; }
 .btn-print:hover { background: #082c6b; transform: translateY(-2px); }
 
 /* شبكة الأجهزة */
-.devices { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-  gap: 20px; 
-  align-items: start; /* حل مشكلة الكارت الواحد */
-}
-.card {
-  background: var(--card-bg); border-radius: 16px; padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.04);
-  cursor: pointer; transition: .3s; border: 1px solid var(--border-color);
-  position: relative; overflow: hidden; display: flex; flex-direction: column; /* حل مشكلة الـ QR */
-}
+.devices { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; align-items: start; }
+.card { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,.04); cursor: pointer; transition: .3s; border: 1px solid var(--border-color); position: relative; overflow: hidden; display: flex; flex-direction: column; }
 .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(11,61,145,.15); border-color: var(--primary); }
 .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .badge { background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
@@ -96,15 +65,8 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 .info-item b { color: var(--text-main); font-weight: 600; }
 .info-item.full-width { grid-column: 1 / -1; }
 .info-item span { color: var(--secondary); font-weight: 700; }
-
-/* مربع الـ QR */
-.qr-mini { 
-  display: flex; justify-content: center; align-items: center; 
-  background: #fafbfc; border: 1px solid var(--border-color); 
-  border-radius: 10px; padding: 10px; margin-top: auto; min-height: 100px; 
-}
+.qr-mini { display: flex; justify-content: center; align-items: center; background: #fafbfc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; margin-top: auto; min-height: 100px; }
 .qr-mini canvas { max-width: 100%; height: auto; }
-
 .empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); font-size: 16px; font-weight: 600; }
 
 /* Modal */
@@ -137,9 +99,8 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 
   <header class="main-header">
     <div class="logo-area">
-      <img src="logo.png" alt="ETQAN + ROSA" class="logo-img">
       <div class="header-text">
-        <h1>نظام إدارة الأجهزة</h1>
+        <h1>ETQAN + ROSA</h1>
         <p>PRECISE MAINTENANCE, SUPERIOR CARE</p>
       </div>
     </div>
@@ -153,18 +114,10 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
       <span class="search-icon">🔍</span>
       <input type="text" id="search" placeholder="ابحث بالاسم، الموديل، الفرع، أو رقم البرتشن..." oninput="applyFilter()">
     </div>
-    <select id="filterBranch" onchange="applyFilter()">
-      <option value="">كل الفروع</option>
-    </select>
-    <select id="filterModel" onchange="applyFilter()">
-      <option value="">كل الموديلات</option>
-    </select>
-    <select id="filterPower" onchange="applyFilter()">
-      <option value="">كل القوى</option>
-    </select>
-    <button class="btn-print" onclick="window.print()">
-      <span>🖨️</span> طباعة الكل
-    </button>
+    <select id="filterBranch" onchange="applyFilter()"><option value="">كل الفروع</option></select>
+    <select id="filterModel" onchange="applyFilter()"><option value="">كل الموديلات</option></select>
+    <select id="filterPower" onchange="applyFilter()"><option value="">كل القوى</option></select>
+    <button class="btn-print" onclick="window.print()"><span>🖨️</span> طباعة الكل</button>
   </div>
 
   <div class="devices" id="devices"></div>
@@ -174,9 +127,6 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 <div class="modal" id="modal" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-header-brand">
-      <img src="logo.png" alt="Logo" style="height: 30px; margin-bottom: 10px;">
-    </div>
     <h2 id="modalTitle"></h2>
     <div id="modalInfo" class="modal-info"></div>
     <div class="qr-large" id="qrLarge"></div>
@@ -186,32 +136,128 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
   </div>
 </div>
 
-<script src="data.js"></script>
 <script>
-// رابط موقعك على جيت هب
-const siteURL = "https://abdallah-gad.github.io/Itqan-web-Data/";
+// ==========================================
+// 1. البيانات (مدموجة هنا عشان نمنع أي مشاكل)
+// ==========================================
+const devices = [
+  {id:1, name:"كريستال ازرق", type:"2 هيد", model:"كريستال", branch:"المنصورة", partition:"1"},
+  {id:2, name:"كرايو البنى", type:"2 هيد", model:"كرايو", branch:"المنصورة", partition:"2"},
+  {id:3, name:"الكرايو (اخضر)", type:"2 هيد", model:"كرايو", branch:"المنصورة", partition:"3"},
+  {id:4, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"1,2,3"},
+  {id:5, name:"كرايو كرستال اخضر", type:"2 هيد", model:"كريستال", branch:"المنصورة", partition:"4"},
+  {id:6, name:"كرايو اسود", type:"2 هيد", model:"كرايو", branch:"المنصورة", partition:"8"},
+  {id:7, name:"فور هيد اسمر", type:"4 هيد", model:"كرايو", branch:"المنصورة", partition:"9"},
+  {id:8, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"4,5,6,7,8,9,10"},
+  {id:9, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"4,5,6,7,8,9,10"},
+  {id:10, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"4,5,6,7,8,9,10"},
+  {id:11, name:"كرايو فرروزا رصاصي", type:"2 هيد", model:"فروزا", branch:"المنصورة", partition:"11"},
+  {id:12, name:"كرايو فريزيكس", type:"2 هيد", model:"فريزيكس", branch:"المنصورة", partition:"13"},
+  {id:13, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"11,12,13"},
+  {id:14, name:"متحرك", type:"-", model:"ابيض", branch:"المنصورة", partition:"11,12,13"},
+  {id:15, name:"كرايو ابيض * لبني", type:"2 هيد", model:"كرايو", branch:"المنصورة", partition:"15"},
+  {id:16, name:"كريستال زيتي", type:"2 هيد", model:"كريستال", branch:"المنصورة", partition:"16"},
+  {id:17, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"14,15,16"},
+  {id:18, name:"كرايو سيلكون رصاصي", type:"2 هيد", model:"سيليكون", branch:"المنصورة", partition:"17"},
+  {id:19, name:"فور هيد اسمر", type:"4 هيد", model:"كرايو", branch:"المنصورة", partition:"18"},
+  {id:20, name:"كرايو لبني * ابيض", type:"2 هيد", model:"كرايو", branch:"المنصورة", partition:"19"},
+  {id:21, name:"كرايو فروزا ازرق", type:"2 هيد", model:"فروزا", branch:"المنصورة", partition:"20"},
+  {id:22, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"17,18,19,20,21"},
+  {id:23, name:"ريديم", type:"-", model:"B-333", branch:"المنصورة", partition:"17,18,19,20,21"},
+  {id:24, name:"متحرك", type:"-", model:"ابيض", branch:"المنصورة", partition:"17,18,19,20,21"},
+  {id:25, name:"كرايو فريزيكس ابيض", type:"2 هيد", model:"فريزيكس", branch:"كفر الشيخ", partition:"2"},
+  {id:26, name:"كرايو كريستال ازرق", type:"2 هيد", model:"كريستال", branch:"كفر الشيخ", partition:"3"},
+  {id:27, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"1,2,3"},
+  {id:28, name:"كرايو كريستال ازرق", type:"2 هيد", model:"كريستال", branch:"كفر الشيخ", partition:"4"},
+  {id:29, name:"كرايو عسلي", type:"2 هيد", model:"كرايو", branch:"كفر الشيخ", partition:"5"},
+  {id:30, name:"متحرك", type:"-", model:"ابيض", branch:"كفر الشيخ", partition:"4,5,6"},
+  {id:31, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"4,5,6"},
+  {id:32, name:"كرايو مجناتك", type:"-", model:"مجناتك ابيض", branch:"كفر الشيخ", partition:"7"},
+  {id:33, name:"كرايو ازرق", type:"2 هيد", model:"كرايو", branch:"كفر الشيخ", partition:"8"},
+  {id:34, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"7,8,9"},
+  {id:35, name:"متحرك", type:"-", model:"ابيض", branch:"كفر الشيخ", partition:"7,8,9,10,11"},
+  {id:36, name:"كرايو فور هيد اسود", type:"4 هيد", model:"كرايو", branch:"كفر الشيخ", partition:"10"},
+  {id:37, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"10,11"},
+  {id:38, name:"كرايو عسلي", type:"4 هيد", model:"ابيض", branch:"كفر الشيخ", partition:"14"},
+  {id:39, name:"كرايو كريستال اسود", type:"2 هيد", model:"كريستال", branch:"كفر الشيخ", partition:"12"},
+  {id:40, name:"متحرك", type:"-", model:"ابيض", branch:"كفر الشيخ", partition:"12,13,14"},
+  {id:41, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"12,13,14"},
+  {id:42, name:"كرايو كريستال اسود", type:"2 هيد", model:"كريستال", branch:"طنطا", partition:"1"},
+  {id:43, name:"كرايو ابيض * لبني", type:"4 هيد", model:"كرايو", branch:"طنطا", partition:"2"},
+  {id:44, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"3"},
+  {id:45, name:"كرايو فروزا", type:"2 هيد", model:"فروزا", branch:"طنطا", partition:"4"},
+  {id:46, name:"متحرك ابيض مقوس", type:"-", model:"ابيض مقوس", branch:"طنطا", partition:"1,2,3,4"},
+  {id:47, name:"كرايو فريزيكس", type:"2 هيد", model:"فريزيكس", branch:"طنطا", partition:"5"},
+  {id:48, name:"كرايو فروزا", type:"2 هيد", model:"فروزا", branch:"طنطا", partition:"6"},
+  {id:49, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"5,6,7,8,9"},
+  {id:50, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"5,6,7,8,9"},
+  {id:51, name:"كرايو لبني * ابيض", type:"2 هيد", model:"كرايو", branch:"طنطا", partition:"9"},
+  {id:52, name:"كرايو كريستال اسود", type:"2 هيد", model:"كريستال", branch:"طنطا", partition:"10"},
+  {id:53, name:"كرايو فور هيد ابيض * اسود", type:"4 هيد", model:"كرايو", branch:"طنطا", partition:"11"},
+  {id:54, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"10,11,12"},
+  {id:55, name:"متحرك بني", type:"-", model:"بني", branch:"طنطا", partition:"10,11,12"},
+  {id:56, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"13,14,15,16"},
+  {id:57, name:"كرايو ابيض", type:"2 هيد", model:"كرايو", branch:"طنطا", partition:"14"},
+  {id:58, name:"كرايو اسود", type:"2 هيد", model:"كرايو", branch:"طنطا", partition:"15"},
+  {id:59, name:"كرايو فور هيد اسود * ابيض", type:"4 هيد", model:"كرايو", branch:"طنطا", partition:"16"},
+  {id:60, name:"متحرك ابيض مقوس", type:"-", model:"ابيض مقوس", branch:"طنطا", partition:"13,14,15,16"},
+  {id:61, name:"متحرك ابيض", type:"-", model:"ابيض", branch:"طنطا", partition:"17,18"},
+  {id:62, name:"ريديم", type:"-", model:"B-333", branch:"طنطا", partition:"17,18"},
+  {id:63, name:"كرايو سيليكون كوري زيتي", type:"2 هيد", model:"سيليكون يعمل متحرك", branch:"طنطا", partition:"18"},
+  {id:64, name:"فور هيد", type:"4 هيد", model:"كرايو", branch:"دمياط", partition:"1"},
+  {id:65, name:"كرايو ديسك توب", type:"2 هيد", model:"ديسك توب", branch:"دمياط", partition:"3"},
+  {id:66, name:"ريديم", type:"-", model:"B-333", branch:"دمياط", partition:"1,2,3,4"},
+  {id:67, name:"متحرك", type:"-", model:"ابيض", branch:"دمياط", partition:"1,2,3,4"},
+  {id:68, name:"كرايو ديسك توب", type:"2 هيد", model:"ديسك توب", branch:"دمياط", partition:"5"},
+  {id:69, name:"كرايو ديسك توب", type:"2 هيد", model:"ديسك توب", branch:"دمياط", partition:"7"},
+  {id:70, name:"ريديم", type:"-", model:"B-333", branch:"دمياط", partition:"5,6,7"},
+  {id:71, name:"متحرك", type:"-", model:"ابيض", branch:"دمياط", partition:"5,6,7"},
+  {id:72, name:"كرايو فور هيد اسمر", type:"4 هيد", model:"كرايو", branch:"دمياط", partition:"8"},
+  {id:73, name:"ريديم", type:"-", model:"B-333", branch:"دمياط", partition:"8,9,10"},
+  {id:74, name:"متحرك", type:"-", model:"ابيض", branch:"دمياط", partition:"8,9,10"},
+  {id:75, name:"كرايو ديسك توب", type:"2 هيد", model:"ديسك توب", branch:"دمياط", partition:"10"},
+  {id:76, name:"كرايو فروزا ابيض", type:"2 هيد", model:"فروزا", branch:"دمياط", partition:"11"},
+  {id:77, name:"ريديم", type:"-", model:"B-333", branch:"دمياط", partition:"11,12"},
+  {id:78, name:"كرايو سيلكون", type:"2 هيد", model:"سيليكون", branch:"العجمي", partition:"1"},
+  {id:79, name:"كرايو البنى", type:"2 هيد", model:"كرايو", branch:"العجمي", partition:"3"},
+  {id:80, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"1,2,3,4"},
+  {id:81, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"1,2,3,4"},
+  {id:82, name:"متحرك", type:"-", model:"ابيض", branch:"العجمي", partition:"1,2,3,4"},
+  {id:83, name:"كرايو مجناتك", type:"2 هيد", model:"مجناتك ابيض", branch:"العجمي", partition:"6"},
+  {id:84, name:"كرايو كحلي", type:"2 هيد", model:"كرايو", branch:"العجمي", partition:"8"},
+  {id:85, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"5,6,7,8"},
+  {id:86, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"5,6,7,8"},
+  {id:87, name:"متحرك", type:"-", model:"ابيض", branch:"العجمي", partition:"5,6,7,8"},
+  {id:88, name:"كرايو ديسك توب", type:"2 هيد", model:"ديسك توب", branch:"العجمي", partition:"9"},
+  {id:89, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"9,10"},
+  {id:90, name:"متحرك", type:"-", model:"ابيض", branch:"العجمي", partition:"9,10"},
+  {id:91, name:"كرايو ابيض * اسود", type:"2 هيد", model:"كرايو", branch:"العجمي", partition:"12"},
+  {id:92, name:"ريديم", type:"-", model:"B-333", branch:"العجمي", partition:"11,12,13"},
+  {id:93, name:"متحرك", type:"-", model:"ابيض", branch:"العجمي", partition:"11,12,13"}
+];
 
+// ==========================================
+// 2. الكود التشغيلي
+// ==========================================
+const siteURL = "https://abdallah-gad.github.io/Itqan-web-Data/";
 const options = { year: 'numeric', month: 'long', day: 'numeric' };
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-EG', options);
-
 let currentDevice = null;
 
 function renderStats() {
   const branches = [...new Set(devices.map(d => d.branch))];
-  const stats = `
+  document.getElementById('stats').innerHTML = `
     <div class="stat"><div class="stat-icon">🖥️</div><div class="stat-info"><span>${devices.length}</span><label>إجمالي الأجهزة</label></div></div>
     <div class="stat"><div class="stat-icon">🏢</div><div class="stat-info"><span>${branches.length}</span><label>الفروع</label></div></div>
     <div class="stat"><div class="stat-icon">⚙️</div><div class="stat-info"><span>${devices.filter(d => d.type.includes('2')).length}</span><label>2 هيد</label></div></div>
     <div class="stat"><div class="stat-icon">🔧</div><div class="stat-info"><span>${devices.filter(d => d.type.includes('4')).length}</span><label>4 هيد</label></div></div>
   `;
-  document.getElementById('stats').innerHTML = stats;
 }
 
 function fillFilters() {
   const branches = [...new Set(devices.map(d => d.branch))].sort();
   const models = [...new Set(devices.map(d => d.model).filter(Boolean))].sort();
   const powers = [...new Set(devices.map(d => d.type).filter(Boolean))].sort();
-
   document.getElementById('filterBranch').innerHTML += branches.map(b => `<option value="${b}">${b}</option>`).join('');
   document.getElementById('filterModel').innerHTML += models.map(m => `<option value="${m}">${m}</option>`).join('');
   document.getElementById('filterPower').innerHTML += powers.map(p => `<option value="${p}">${p}</option>`).join('');
@@ -233,24 +279,18 @@ function applyFilter() {
     }
     return true;
   });
-
   renderDevices(filtered);
 }
 
 function renderDevices(list) {
   const container = document.getElementById('devices');
   container.innerHTML = '';
-
-  if (list.length === 0) {
-    container.innerHTML = '<div class="empty">لا توجد أجهزة مطابقة لبحثك 🔍</div>';
-    return;
-  }
+  if (list.length === 0) { container.innerHTML = '<div class="empty">لا توجد أجهزة مطابقة لبحثك 🔍</div>'; return; }
 
   list.forEach(dev => {
     const card = document.createElement('div');
     card.className = 'card';
     card.onclick = () => openModal(dev);
-
     card.innerHTML = `
       <div class="card-head">
         <span class="badge">ID: ${dev.id}</span>
@@ -266,13 +306,9 @@ function renderDevices(list) {
     `;
     container.appendChild(card);
 
-    // توليد الـ QR
-    const qrContainer = document.getElementById(`qr-mini-${dev.id}`);
-    const qrLink = `${siteURL}?id=${dev.id}`; // الرابط اللي هيتقرأ
-    
+    const qrLink = `${siteURL}?id=${dev.id}`;
     QRCode.toCanvas(qrLink, { width: 90, margin: 1, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
-      if (error) console.error(error);
-      else qrContainer.appendChild(canvas);
+      if (!error) document.getElementById(`qr-mini-${dev.id}`).appendChild(canvas);
     });
   });
 }
@@ -286,16 +322,12 @@ function openModal(dev) {
     <div><b>الفرع:</b> ${dev.branch}</div>
     <div><b>البرتشن:</b> ${dev.partition}</div>
   `;
-
   const qrBox = document.getElementById('qrLarge');
   qrBox.innerHTML = '';
-  
   const qrLink = `${siteURL}?id=${dev.id}`;
   QRCode.toCanvas(qrLink, { width: 250, margin: 2, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
-    if (error) console.error(error);
-    else qrBox.appendChild(canvas);
+    if (!error) qrBox.appendChild(canvas);
   });
-
   document.getElementById('modal').classList.add('active');
 }
 
@@ -310,14 +342,7 @@ function printSingle() {
   const win = window.open('', '_blank');
   win.document.write(`
     <html dir="rtl"><head><title>QR - ${currentDevice.name}</title>
-    <style>
-      body{font-family:'Cairo', sans-serif;text-align:center;padding:40px;background:#fff}
-      .header{color:#0b3d91;font-size:18px;font-weight:bold;margin-bottom:20px;border-bottom:2px solid #c2185b;padding-bottom:10px}
-      h1{font-size:24px;color:#333;margin:10px 0}
-      .info{margin:8px 0;font-size:15px;color:#555}
-      .qr{margin:20px auto;padding:15px;border:1px solid #ddd;display:inline-block;border-radius:10px}
-      .footer{margin-top:20px;font-size:12px;color:#999}
-    </style>
+    <style>body{font-family:'Cairo', sans-serif;text-align:center;padding:40px;} .header{color:#0b3d91;font-size:18px;font-weight:bold;margin-bottom:20px;border-bottom:2px solid #c2185b;padding-bottom:10px} h1{font-size:24px;color:#333;margin:10px 0} .info{margin:8px 0;font-size:15px;color:#555} .qr{margin:20px auto;padding:15px;border:1px solid #ddd;display:inline-block;border-radius:10px} .footer{margin-top:20px;font-size:12px;color:#999}</style>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"><\/script>
     </head><body>
     <div class="header">ETQAN + ROSA Maintenance Group</div>
@@ -340,23 +365,18 @@ function printSingle() {
   `);
 }
 
-// دالة عشان تفتح الجهاز لوحده لو حد مسح الـ QR وجه من لينك
 function checkUrlForDevice() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const deviceId = urlParams.get('id');
+  const deviceId = new URLSearchParams(window.location.search).get('id');
   if (deviceId) {
     const dev = devices.find(d => d.id == deviceId);
-    if (dev) {
-      // بنستنى ثانية عشان الصفحة تحمل الأول
-      setTimeout(() => openModal(dev), 500);
-    }
+    if (dev) setTimeout(() => openModal(dev), 500);
   }
 }
 
 renderStats();
 fillFilters();
 renderDevices(devices);
-checkUrlForDevice(); // شيك على اللينك أول ما الصفحة تفتح
+checkUrlForDevice();
 </script>
 </body>
 </html>
