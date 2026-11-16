@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETQAN + ROSA | نظام إدارة الأجهزة</title>
-<!-- مكتبة الخطوط -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<!-- مكتبة الـ QR الجديدة -->
+<!-- مكتبة الـ QR الجديدة والمضمونة -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
 <style>
@@ -33,7 +32,7 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
   border-top: 4px solid var(--secondary);
 }
 .logo-area { display: flex; align-items: center; gap: 20px; }
-.logo-img { height: 60px; object-fit: contain; border-radius: 8px; background: #fff; padding: 2px; }
+.logo-img { height: 60px; object-fit: contain; }
 .header-text h1 { font-size: 22px; color: var(--primary); font-weight: 700; }
 .header-text p { font-size: 12px; color: var(--secondary); font-weight: 600; letter-spacing: 1px; }
 .date-badge { background: #e8f0fe; color: var(--primary); padding: 8px 16px; border-radius: 30px; font-weight: 600; font-size: 14px; }
@@ -60,9 +59,18 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 .search-box .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999; }
 .search-box input { width: 100%; padding: 12px 40px 12px 15px; border: 1px solid var(--border-color); border-radius: 10px; font-family: 'Cairo'; font-size: 14px; background: #f9fbfd; }
 .search-box input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(11,61,145,.1); }
-.toolbar select { padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 10px; font-family: 'Cairo'; font-size: 14px; background: #f9fbfd; flex: 1; min-width: 140px; cursor: pointer; }
+.toolbar select {
+  padding: 12px 15px; border: 1px solid var(--border-color);
+  border-radius: 10px; font-family: 'Cairo'; font-size: 14px;
+  background: #f9fbfd; flex: 1; min-width: 140px; cursor: pointer;
+}
 .toolbar select:focus { outline: none; border-color: var(--primary); }
-.btn-print { padding: 12px 20px; border: none; border-radius: 10px; background: var(--primary); color: #fff; cursor: pointer; font-family: 'Cairo'; font-weight: 700; font-size: 14px; transition: .3s; display: flex; align-items: center; gap: 8px; }
+.btn-print {
+  padding: 12px 20px; border: none; border-radius: 10px;
+  background: var(--primary); color: #fff; cursor: pointer;
+  font-family: 'Cairo'; font-weight: 700; font-size: 14px;
+  transition: .3s; display: flex; align-items: center; gap: 8px;
+}
 .btn-print:hover { background: #082c6b; transform: translateY(-2px); }
 
 /* شبكة الأجهزة */
@@ -70,13 +78,13 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
   display: grid; 
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
   gap: 20px; 
-  align-items: start; 
+  align-items: start; /* حل مشكلة الكارت الواحد */
 }
 .card {
   background: var(--card-bg); border-radius: 16px; padding: 20px;
   box-shadow: 0 4px 15px rgba(0,0,0,.04);
   cursor: pointer; transition: .3s; border: 1px solid var(--border-color);
-  position: relative; overflow: hidden; display: flex; flex-direction: column;
+  position: relative; overflow: hidden; display: flex; flex-direction: column; /* حل مشكلة الـ QR */
 }
 .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(11,61,145,.15); border-color: var(--primary); }
 .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -88,8 +96,14 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 .info-item b { color: var(--text-main); font-weight: 600; }
 .info-item.full-width { grid-column: 1 / -1; }
 .info-item span { color: var(--secondary); font-weight: 700; }
-.qr-mini { display: flex; justify-content: center; align-items: center; background: #fafbfc; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; margin-top: auto; min-height: 100px; transition: .3s; }
-.card:hover .qr-mini { border-color: var(--primary); background: #fff; }
+
+/* مربع الـ QR */
+.qr-mini { 
+  display: flex; justify-content: center; align-items: center; 
+  background: #fafbfc; border: 1px solid var(--border-color); 
+  border-radius: 10px; padding: 10px; margin-top: auto; min-height: 100px; 
+}
+.qr-mini canvas { max-width: 100%; height: auto; }
 
 .empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); font-size: 16px; font-weight: 600; }
 
@@ -174,6 +188,9 @@ body { background-color: var(--bg-color); color: var(--text-main); padding: 20px
 
 <script src="data.js"></script>
 <script>
+// رابط موقعك على جيت هب
+const siteURL = "https://abdallah-gad.github.io/Itqan-web-Data/";
+
 const options = { year: 'numeric', month: 'long', day: 'numeric' };
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-EG', options);
 
@@ -249,25 +266,15 @@ function renderDevices(list) {
     `;
     container.appendChild(card);
 
-    // توليد الـ QR بالمكتبة الجديدة
+    // توليد الـ QR
     const qrContainer = document.getElementById(`qr-mini-${dev.id}`);
-    QRCode.toCanvas(buildQRText(dev), { width: 90, margin: 1, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
+    const qrLink = `${siteURL}?id=${dev.id}`; // الرابط اللي هيتقرأ
+    
+    QRCode.toCanvas(qrLink, { width: 90, margin: 1, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
       if (error) console.error(error);
       else qrContainer.appendChild(canvas);
     });
   });
-}
-
-function buildQRText(dev) {
-  return [
-    `ETQAN + ROSA Maintenance Group`,
-    `ID: ${dev.id}`,
-    `Device: ${dev.name}`,
-    `Power: ${dev.type}`,
-    `Model: ${dev.model}`,
-    `Branch: ${dev.branch}`,
-    `Partition: ${dev.partition}`,
-  ].join('\n');
 }
 
 function openModal(dev) {
@@ -283,7 +290,8 @@ function openModal(dev) {
   const qrBox = document.getElementById('qrLarge');
   qrBox.innerHTML = '';
   
-  QRCode.toCanvas(buildQRText(dev), { width: 250, margin: 2, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
+  const qrLink = `${siteURL}?id=${dev.id}`;
+  QRCode.toCanvas(qrLink, { width: 250, margin: 2, color: { dark: '#0b3d91', light: '#ffffff' } }, function (error, canvas) {
     if (error) console.error(error);
     else qrBox.appendChild(canvas);
   });
@@ -322,7 +330,7 @@ function printSingle() {
     <div class="footer">PRECISE MAINTENANCE, SUPERIOR CARE</div>
     <script>
       setTimeout(()=>{
-        QRCode.toCanvas(document.createElement('canvas'), \`${buildQRText(currentDevice).replace(/`/g,'\\`')}\`, { width: 250, margin: 2 }, function (error, canvas) {
+        QRCode.toCanvas(document.createElement('canvas'), \`${siteURL}?id=${currentDevice.id}\`, { width: 250, margin: 2 }, function (error, canvas) {
           if(!error) document.getElementById('qr').appendChild(canvas);
           window.print();
         });
@@ -332,9 +340,23 @@ function printSingle() {
   `);
 }
 
+// دالة عشان تفتح الجهاز لوحده لو حد مسح الـ QR وجه من لينك
+function checkUrlForDevice() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const deviceId = urlParams.get('id');
+  if (deviceId) {
+    const dev = devices.find(d => d.id == deviceId);
+    if (dev) {
+      // بنستنى ثانية عشان الصفحة تحمل الأول
+      setTimeout(() => openModal(dev), 500);
+    }
+  }
+}
+
 renderStats();
 fillFilters();
 renderDevices(devices);
+checkUrlForDevice(); // شيك على اللينك أول ما الصفحة تفتح
 </script>
 </body>
 </html>
