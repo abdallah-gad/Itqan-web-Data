@@ -9,85 +9,134 @@
 :root {
   --primary: #0b3d91;
   --secondary: #c2185b;
-  --bg-color: #f4f7f6;
+  --bg-gradient: linear-gradient(135deg, #0b3d91 0%, #1a237e 100%);
   --card-bg: #ffffff;
   --text-main: #2c3e50;
-  --text-muted: #7f8c8d;
-  --border-color: #e0e6ed;
+  --text-muted: #6c7a89;
+  --border-color: #e1e8ed;
 }
+
 * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
-body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-
-.device-page {
-  background: var(--card-bg); border-radius: 24px; padding: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.1); max-width: 500px; width: 100%;
-  border-top: 6px solid var(--secondary); text-align: center;
+body { 
+  background: var(--bg-gradient); 
+  color: var(--text-main); 
+  padding: 20px; 
+  min-height: 100vh; 
+  display: flex; justify-content: center; align-items: center; 
 }
 
-.header-logo { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
-.header-logo span { color: var(--secondary); }
-
-.device-id-badge {
-  display: inline-block; background: var(--primary); color: #fff;
-  padding: 8px 20px; border-radius: 30px; font-size: 16px; font-weight: 700;
-  margin-bottom: 20px;
+.device-card {
+  background: var(--card-bg); border-radius: 30px; 
+  width: 100%; max-width: 450px; overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.device-name { font-size: 28px; font-weight: 900; color: var(--text-main); margin-bottom: 30px; border-bottom: 2px dashed var(--border-color); padding-bottom: 20px; }
+@keyframes popIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
-.info-list { text-align: right; background: #f8f9fa; border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-color); }
-.info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e9ecef; font-size: 16px; }
-.info-row:last-child { border-bottom: none; }
-.info-row span.label { color: var(--text-muted); font-weight: 600; }
-.info-row span.value { color: var(--primary); font-weight: 900; font-size: 18px; }
+/* الجزء العلوي من الكارنيه */
+.card-header {
+  background: linear-gradient(135deg, var(--primary), #1a237e);
+  padding: 30px 20px; text-align: center; position: relative;
+}
+.card-header::after {
+  content: ''; position: absolute; bottom: -20px; left: 0; width: 100%; height: 40px;
+  background: var(--card-bg); border-radius: 50% 50% 0 0;
+}
+.logo-text { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: 2px; margin-bottom: 5px;}
+.logo-text span { color: var(--secondary); }
+.logo-sub { font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px; font-weight: 600;}
 
+/* شارة الرقم */
+.id-badge {
+  background: var(--secondary); color: #fff;
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 20px; font-weight: 900; position: absolute;
+  bottom: -30px; left: 50%; transform: translateX(-50%);
+  box-shadow: 0 10px 20px rgba(194, 24, 91, 0.4); z-index: 2;
+}
+
+/* جسم الكارنيه */
+.card-body { padding: 40px 30px 30px; text-align: center; }
+.device-name { font-size: 26px; font-weight: 900; color: var(--text-main); margin-bottom: 25px; }
+
+/* شبكة البيانات */
+.data-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.data-row { 
+  display: flex; justify-content: space-between; align-items: center; 
+  background: #f8f9fa; padding: 15px 20px; border-radius: 14px; 
+  border: 1px solid var(--border-color); transition: .3s;
+}
+.data-row:hover { background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-color: var(--primary); }
+.data-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-weight: 700; font-size: 15px; }
+.data-label i { font-style: normal; font-size: 18px; }
+.data-value { color: var(--primary); font-weight: 900; font-size: 16px; background: #e8f0fe; padding: 4px 12px; border-radius: 8px; }
+
+/* زرار الرجوع */
 .btn-back {
-  display: inline-block; background: var(--bg-color); color: var(--text-main);
-  text-decoration: none; padding: 12px 24px; border-radius: 10px; font-weight: 700;
-  transition: .3s; border: 1px solid var(--border-color);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 16px; border-radius: 14px;
+  background: var(--primary); color: #fff; text-decoration: none;
+  font-weight: 800; font-size: 16px; transition: .3s;
+  box-shadow: 0 8px 20px rgba(11,61,145,0.2);
 }
-.btn-back:hover { background: #e2e8f0; }
+.btn-back:hover { background: #082c6b; transform: translateY(-2px); box-shadow: 0 12px 25px rgba(11,61,145,0.3); }
 
-.error-msg { color: #d32f2f; font-weight: bold; font-size: 18px; }
+/* حالة الخطأ */
+.error-state { padding: 40px; text-align: center; }
+.error-state h2 { color: #d32f2f; font-size: 22px; margin-bottom: 10px; }
+.error-state p { color: var(--text-muted); font-weight: 600; }
 </style>
 </head>
 <body>
 
-<div class="device-page" id="app">
-  <!-- سيتم تحميل البيانات هنا عبر الجافاسكريبت -->
-</div>
+<div class="device-card" id="app"></div>
 
 <script src="data.js"></script>
 <script>
-// جلب رقم الجهاز من رابط الصفحة (مثلاً device.html?id=7)
 const urlParams = new URLSearchParams(window.location.search);
 const deviceId = urlParams.get('id');
-
 const app = document.getElementById('app');
 
 if (!deviceId) {
-  app.innerHTML = `<h2 class="error-msg">لم يتم تحديد جهاز!</h2><p>الرجاء مسح QR Code صالح.</p>`;
+  app.innerHTML = `<div class="error-state"><h2>⚠️ لم يتم تحديد جهاز!</h2><p>الرجاء مسح QR Code صالح.</p></div>`;
 } else {
-  // البحث عن الجهاز بالرقم
   const dev = devices.find(d => d.id == deviceId);
 
   if (!dev) {
-    app.innerHTML = `<h2 class="error-msg">الجهاز غير موجود!</h2><p>تأكد من أن رقم الجهاز صحيح.</p>`;
+    app.innerHTML = `<div class="error-state"><h2>❌ الجهاز غير موجود!</h2><p>تأكد من أن رقم الجهاز صحيح.</p></div>`;
   } else {
-    // عرض بيانات الجهاز
     app.innerHTML = `
-      <div class="header-logo">ETQAN <span>+</span> ROSA</div>
-      <div class="device-id-badge">جهاز رقم #${dev.id}</div>
-      <h1 class="device-name">${dev.name}</h1>
-      
-      <div class="info-list">
-        <div class="info-row"><span class="label">القوة:</span> <span class="value">${dev.type}</span></div>
-        <div class="info-row"><span class="label">الموديل:</span> <span class="value">${dev.model}</span></div>
-        <div class="info-row"><span class="label">الفرع:</span> <span class="value">${dev.branch}</span></div>
-        <div class="info-row"><span class="label">البرتشن:</span> <span class="value">${dev.partition}</span></div>
+      <div class="card-header">
+        <div class="logo-text">ETQAN <span>+</span> ROSA</div>
+        <div class="logo-sub">PRECISE MAINTENANCE, SUPERIOR CARE</div>
+        <div class="id-badge">#${dev.id}</div>
       </div>
+      <div class="card-body">
+        <h1 class="device-name">${dev.name}</h1>
+        
+        <div class="data-grid">
+          <div class="data-row">
+            <div class="data-label"><i>⚡</i> القوة</div>
+            <div class="data-value">${dev.type}</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label"><i>⚙️</i> الموديل</div>
+            <div class="data-value">${dev.model}</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label"><i>🏢</i> الفرع</div>
+            <div class="data-value">${dev.branch}</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label"><i>🧩</i> البرتشن</div>
+            <div class="data-value">${dev.partition}</div>
+          </div>
+        </div>
 
-      <a href="index.html" class="btn-back">← العودة للصفحة الرئيسية</a>
+        <a href="index.html" class="btn-back">← العودة للصفحة الرئيسية</a>
+      </div>
     `;
   }
 }
