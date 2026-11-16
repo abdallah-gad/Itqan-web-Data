@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بيانات الجهاز | ETQAN + ROSA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0b3d91;
+  --secondary: #c2185b;
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-main: #2c3e50;
+  --text-muted: #7f8c8d;
+  --border-color: #e0e6ed;
+}
+* { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+
+.device-page {
+  background: var(--card-bg); border-radius: 24px; padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.1); max-width: 500px; width: 100%;
+  border-top: 6px solid var(--secondary); text-align: center;
+}
+
+.header-logo { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
+.header-logo span { color: var(--secondary); }
+
+.device-id-badge {
+  display: inline-block; background: var(--primary); color: #fff;
+  padding: 8px 20px; border-radius: 30px; font-size: 16px; font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.device-name { font-size: 28px; font-weight: 900; color: var(--text-main); margin-bottom: 30px; border-bottom: 2px dashed var(--border-color); padding-bottom: 20px; }
+
+.info-list { text-align: right; background: #f8f9fa; border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-color); }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e9ecef; font-size: 16px; }
+.info-row:last-child { border-bottom: none; }
+.info-row span.label { color: var(--text-muted); font-weight: 600; }
+.info-row span.value { color: var(--primary); font-weight: 900; font-size: 18px; }
+
+.btn-back {
+  display: inline-block; background: var(--bg-color); color: var(--text-main);
+  text-decoration: none; padding: 12px 24px; border-radius: 10px; font-weight: 700;
+  transition: .3s; border: 1px solid var(--border-color);
+}
+.btn-back:hover { background: #e2e8f0; }
+
+.error-msg { color: #d32f2f; font-weight: bold; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div class="device-page" id="app">
+  <!-- سيتم تحميل البيانات هنا عبر الجافاسكريبت -->
+</div>
+
+<script src="data.js"></script>
+<script>
+// جلب رقم الجهاز من رابط الصفحة (مثلاً device.html?id=7)
+const urlParams = new URLSearchParams(window.location.search);
+const deviceId = urlParams.get('id');
+
+const app = document.getElementById('app');
+
+if (!deviceId) {
+  app.innerHTML = `<h2 class="error-msg">لم يتم تحديد جهاز!</h2><p>الرجاء مسح QR Code صالح.</p>`;
+} else {
+  // البحث عن الجهاز بالرقم
+  const dev = devices.find(d => d.id == deviceId);
+
+  if (!dev) {
+    app.innerHTML = `<h2 class="error-msg">الجهاز غير موجود!</h2><p>تأكد من أن رقم الجهاز صحيح.</p>`;
+  } else {
+    // عرض بيانات الجهاز
+    app.innerHTML = `
+      <div class="header-logo">ETQAN <span>+</span> ROSA</div>
+      <div class="device-id-badge">جهاز رقم #${dev.id}</div>
+      <h1 class="device-name">${dev.name}</h1>
+      
+      <div class="info-list">
+        <div class="info-row"><span class="label">القوة:</span> <span class="value">${dev.type}</span></div>
+        <div class="info-row"><span class="label">الموديل:</span> <span class="value">${dev.model}</span></div>
+        <div class="info-row"><span class="label">الفرع:</span> <span class="value">${dev.branch}</span></div>
+        <div class="info-row"><span class="label">البرتشن:</span> <span class="value">${dev.partition}</span></div>
+      </div>
+
+      <a href="index.html" class="btn-back">← العودة للصفحة الرئيسية</a>
+    `;
+  }
+}
+</script>
+</body>
+</html>
