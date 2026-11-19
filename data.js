@@ -30,7 +30,7 @@ const devices = [
   {id:29, name:"كرايو عسلي", type:"2 هيد", model:"كرايو", branch:"كفر الشيخ", partition:"5", morning_tech:"امل", evening_tech:"مروه", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
   {id:30, name:"متحرك", type:"-", model:"ابيض", branch:"كفر الشيخ", partition:"4,5,6", morning_tech:"امل", evening_tech:"مروه", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
   {id:31, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"4,5,6", morning_tech:"امل", evening_tech:"مروه", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
-  {id:32, name:"كرايو مجناتك", type:"-", model:"مجناتك ابيض", branch:"كفر الشيخ", partition:"7", morning_tech:"ايمان", evening_tech:"أسماء", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
+  {id:32, name:"كرايو مجناتك", type:"2 هيد", model:"مجناتك ابيض", branch:"كفر الشيخ", partition:"7", morning_tech:"ايمان", evening_tech:"أسماء", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
   {id:33, name:"كرايو ازرق", type:"2 هيد", model:"كرايو", branch:"كفر الشيخ", partition:"8", morning_tech:"ايمان", evening_tech:"أسماء", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
   {id:34, name:"ريديم", type:"-", model:"B-333", branch:"كفر الشيخ", partition:"7,8,9", morning_tech:"ايمان", evening_tech:"أسماء", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
   {id:35, name:"متحرك", type:"-", model:"ابيض", branch:"كفر الشيخ", partition:"7,8,9,10,11", morning_tech:"ايمان", evening_tech:"أسماء", purchase_date:"", warranty_period:"", warranty_expiry:"", image:""},
