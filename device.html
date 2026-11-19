@@ -14,6 +14,8 @@
   --text-main: #2c3e50;
   --text-muted: #6c7a89;
   --border-color: #e1e8ed;
+  --success: #2e7d32;
+  --danger: #d32f2f;
 }
 
 * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
@@ -24,143 +26,280 @@ body {
   color: var(--text-main); 
   padding: 20px; 
   min-height: 100vh; 
-  display: flex; justify-content: center; align-items: center; 
+  display: flex; flex-direction: column; justify-content: center; align-items: center; 
 }
 
+/* شريط البحث */
+.search-container { margin-bottom: 20px; width: 100%; max-width: 450px; }
+.search-box {
+  display: flex; background: var(--card-bg); border-radius: 16px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid transparent; transition: .3s;
+}
+.search-box:focus-within { border-color: var(--secondary); }
+.search-box input {
+  flex: 1; padding: 15px 20px; border: none; outline: none; font-family: 'Cairo';
+  font-size: 16px; font-weight: 600; color: var(--text-main);
+}
+.search-box button {
+  background: var(--secondary); color: #fff; border: none; padding: 0 25px;
+  cursor: pointer; font-family: 'Cairo'; font-weight: 700; font-size: 16px; transition: .3s;
+}
+.search-box button:hover { background: #a3154b; }
+
+/* الكارت */
 .device-card {
   background: var(--card-bg); border-radius: 30px; 
   width: 100%; max-width: 450px; overflow: hidden;
   box-shadow: 0 25px 50px rgba(0,0,0,0.5);
   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
+  display: none; 
 }
 
 @keyframes popIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
-/* رأس الكارنيه (تم تعديله) */
+/* رأس الكارنيه - تم تعديله لاستيعاب الصورة */
 .card-header {
   background: linear-gradient(135deg, var(--primary), #1a237e);
-  padding: 35px 20px 50px; /* زيادة المساحة تحت عشان الدايرة */
-  text-align: center; 
-  position: relative;
+  padding: 25px 20px 60px; text-align: center; position: relative;
+  display: flex; flex-direction: column; align-items: center;
 }
 
-/* الدايرة الحمرا (ID) */
+/* تصميم صورة الجهاز */
+.device-image-container {
+  width: 100px; height: 100px; border-radius: 50%; background: #fff;
+  display: flex; justify-content: center; align-items: center;
+  border: 4px solid var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  margin-bottom: 15px; overflow: hidden; z-index: 3;
+}
+.device-image-container img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.device-image-placeholder {
+  font-size: 40px; color: var(--primary); font-weight: 900;
+}
+
+/* شارة الرقم */
 .id-badge {
   background: var(--secondary); color: #fff;
-  width: 75px; height: 75px; border-radius: 50%;
+  width: 60px; height: 60px; border-radius: 50%;
   display: flex; justify-content: center; align-items: center;
-  font-size: 24px; font-weight: 900; 
-  position: absolute;
-  bottom: -37.5px; left: 50%; transform: translateX(-50%);
+  font-size: 20px; font-weight: 900; position: absolute;
+  bottom: -30px; left: 50%; transform: translateX(-50%);
   box-shadow: 0 10px 20px rgba(194, 24, 91, 0.4); z-index: 2;
   border: 4px solid var(--card-bg);
 }
 
-/* تنسيق اللوجو النصي */
-.header-logo {
-  font-size: 32px; 
-  font-weight: 900; 
-  color: #fff; 
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-.header-logo span { color: var(--secondary); } /* علامة + */
+.header-logo { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: 2px; margin-bottom: 4px; display: flex; justify-content: center; align-items: center; gap: 5px; }
+.header-logo span { color: var(--secondary); }
+.logo-sub { font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px; font-weight: 700; text-transform: uppercase;}
 
-.logo-sub { 
-  font-size: 11px; 
-  color: rgba(255,255,255,0.7); 
-  letter-spacing: 2px; 
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-/* جسم الكارنيه */
-.card-body { padding: 55px 30px 30px; text-align: center; }
+.card-body { padding: 50px 30px 30px; text-align: center; }
 .device-name { font-size: 26px; font-weight: 900; color: var(--text-main); margin-bottom: 25px; }
 
-/* شبكة البيانات */
-.data-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.data-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 .data-row { 
   display: flex; justify-content: space-between; align-items: center; 
-  background: #f8f9fa; padding: 15px 20px; border-radius: 16px; 
+  background: #f8f9fa; padding: 12px 18px; border-radius: 14px; 
   border: 1px solid var(--border-color); transition: .3s;
 }
 .data-row:hover { background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-color: var(--primary); }
-.data-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-weight: 700; font-size: 15px; }
-.data-label i { font-style: normal; font-size: 18px; }
-.data-value { color: var(--primary); font-weight: 900; font-size: 16px; background: #e8f0fe; padding: 4px 14px; border-radius: 10px; }
+.data-label { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 14px; }
+.data-label i { font-style: normal; font-size: 16px; }
+.data-value { color: var(--primary); font-weight: 900; font-size: 15px; background: #e8f0fe; padding: 4px 12px; border-radius: 10px; }
 
-/* زرار الرجوع */
+.section-title {
+  font-size: 16px; font-weight: 900; color: var(--text-main); text-align: right;
+  margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 2px dashed var(--border-color);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* قسم الضمان */
+.warranty-section {
+  margin-top: 10px; border: 2px dashed #cfd8dc; border-radius: 16px; padding: 20px; background: #fafafa; transition: .3s;
+}
+.warranty-section.unlocked { border-color: var(--success); background: #f1f8e9; }
+.pin-input-group { display: flex; gap: 10px; margin-top: 10px;}
+.pin-input-group input {
+  flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);
+  font-family: 'Cairo'; font-size: 16px; text-align: center; font-weight: bold; letter-spacing: 5px;
+}
+.pin-input-group button {
+  padding: 12px 20px; border: none; border-radius: 10px; background: var(--primary); color: #fff;
+  font-family: 'Cairo'; font-weight: bold; cursor: pointer; transition: .3s;
+}
+.pin-input-group button:hover { background: #082c6b; }
+.warranty-box { display: none; flex-direction: column; gap: 10px; margin-top: 15px; }
+.warranty-box.show { display: flex; }
+.warranty-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700;}
+.warranty-row span:first-child { color: #b28900; }
+.warranty-row span:last-child { color: var(--text-main); }
+.status-badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; color: #fff;}
+.status-active { background: var(--success); }
+.status-expired { background: var(--danger); }
+.error-text { color: var(--danger); font-size: 14px; font-weight: 700; margin-top: 10px; display: none; }
+
 .btn-back {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   width: 100%; padding: 16px; border-radius: 16px;
   background: var(--primary); color: #fff; text-decoration: none;
   font-weight: 800; font-size: 16px; transition: .3s;
-  box-shadow: 0 8px 20px rgba(11,61,145,0.2);
+  box-shadow: 0 8px 20px rgba(11,61,145,0.2); margin-top: 20px;
 }
-.btn-back:hover { background: #082c6b; transform: translateY(-2px); box-shadow: 0 12px 25px rgba(11,61,145,0.3); }
+.btn-back:hover { background: #082c6b; transform: translateY(-2px); }
 
-/* حالة الخطأ */
-.error-state { padding: 40px; text-align: center; }
-.error-state h2 { color: #d32f2f; font-size: 22px; margin-bottom: 10px; }
+.error-state { background: var(--card-bg); padding: 40px; text-align: center; border-radius: 30px; max-width: 450px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+.error-state h2 { color: var(--danger); font-size: 22px; margin-bottom: 10px; }
 .error-state p { color: var(--text-muted); font-weight: 600; }
 </style>
 </head>
 <body>
 
+<div class="search-container">
+  <div class="search-box">
+    <input type="number" id="searchInput" placeholder="أدخل رقم الجهاز (ID)..." onkeypress="handleSearch(event)">
+    <button onclick="searchDevice()">بحث 🔍</button>
+  </div>
+</div>
+
 <div class="device-card" id="app"></div>
+<div class="error-state" id="errorBox" style="display:none;"></div>
 
 <script src="data.js"></script>
 <script>
+const WARRANTY_PIN = "1234"; 
+
 const urlParams = new URLSearchParams(window.location.search);
-const deviceId = urlParams.get('id');
+const urlId = urlParams.get('id');
 const app = document.getElementById('app');
+const errorBox = document.getElementById('errorBox');
 
-if (!deviceId) {
-  app.innerHTML = `<div class="error-state"><h2>⚠️ لم يتم تحديد جهاز!</h2><p>الرجاء مسح QR Code صالح.</p></div>`;
-} else {
-  const dev = devices.find(d => d.id == deviceId);
-
-  if (!dev) {
-    app.innerHTML = `<div class="error-state"><h2>❌ الجهاز غير موجود!</h2><p>تأكد من أن رقم الجهاز صحيح.</p></div>`;
-  } else {
-    app.innerHTML = `
-      <div class="card-header">
-        <div class="header-logo">ETQAN <span>+</span> ROSA</div>
-        <div class="logo-sub">PRECISE MAINTENANCE, SUPERIOR CARE</div>
-        <div class="id-badge">#${dev.id}</div>
-      </div>
-      <div class="card-body">
-        <h1 class="device-name">${dev.name}</h1>
-        
-        <div class="data-grid">
-          <div class="data-row">
-            <div class="data-label"><i>⚡</i> القوة</div>
-            <div class="data-value">${dev.type}</div>
-          </div>
-          <div class="data-row">
-            <div class="data-label"><i>⚙️</i> الموديل</div>
-            <div class="data-value">${dev.model}</div>
-          </div>
-          <div class="data-row">
-            <div class="data-label"><i>🏢</i> الفرع</div>
-            <div class="data-value">${dev.branch}</div>
-          </div>
-          <div class="data-row">
-            <div class="data-label"><i>🧩</i> البرتشن</div>
-            <div class="data-value">${dev.partition}</div>
-          </div>
-        </div>
-
-        <a href="index.html" class="btn-back">← العودة للصفحة الرئيسية</a>
-      </div>
-    `;
+function showDevice(dev) {
+  app.style.display = 'block';
+  errorBox.style.display = 'none';
+  
+  // حساب حالة الضمان
+  let warrantyStatus = "غير محدد";
+  let warrantyClass = "status-active";
+  if (dev.warranty_expiry) {
+    const expiryDate = new Date(dev.warranty_expiry);
+    const today = new Date();
+    if (expiryDate >= today) {
+      warrantyStatus = "ساري ✅";
+      warrantyClass = "status-active";
+    } else {
+      warrantyStatus = "منتهي ❌";
+      warrantyClass = "status-expired";
+    }
   }
+
+  // تحديد الصورة أو الحرف الأول
+  let imageContent = '';
+  if (dev.image) {
+    imageContent = `<img src="${dev.image}" alt="${dev.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'device-image-placeholder\\'>${dev.name.charAt(0)}</div>';">`;
+  } else {
+    imageContent = `<div class="device-image-placeholder">${dev.name.charAt(0)}</div>`;
+  }
+
+  app.innerHTML = `
+    <div class="card-header">
+      <div class="device-image-container">
+        ${imageContent}
+      </div>
+      <div class="header-logo">ETQAN <span>+</span> ROSA</div>
+      <div class="logo-sub">PRECISE MAINTENANCE, SUPERIOR CARE</div>
+      <div class="id-badge">#${dev.id}</div>
+    </div>
+    <div class="card-body">
+      <h1 class="device-name">${dev.name}</h1>
+      
+      <div class="data-grid">
+        <div class="data-row"><div class="data-label"><i>⚡</i> القوة</div><div class="data-value">${dev.type}</div></div>
+        <div class="data-row"><div class="data-label"><i>⚙️</i> الموديل</div><div class="data-value">${dev.model}</div></div>
+        <div class="data-row"><div class="data-label"><i>🏢</i> الفرع</div><div class="data-value">${dev.branch}</div></div>
+        <div class="data-row"><div class="data-label"><i>🧩</i> البرتشن</div><div class="data-value">${dev.partition}</div></div>
+      </div>
+
+      <div class="section-title">🛠️ فريق الصيانة</div>
+      <div class="data-grid">
+        <div class="data-row"><div class="data-label"><i>🌅</i> تكنشن صباحي</div><div class="data-value">${dev.morning_tech || '-'}</div></div>
+        <div class="data-row"><div class="data-label"><i>🌙</i> تكنشن مسائي</div><div class="data-value">${dev.evening_tech || '-'}</div></div>
+      </div>
+
+      <div class="section-title" style="margin-top: 30px;">🛡️ بيانات الضمان (محمية)</div>
+      <div class="warranty-section" id="warrantySection">
+        <div id="pinRequest">
+          <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">أدخل الرقم السري لعرض بيانات الضمان</p>
+          <div class="pin-input-group">
+            <input type="password" id="pinInput" placeholder="****" maxlength="6" onkeypress="handlePinEnter(event, '${dev.id}')">
+            <button onclick="checkPin('${dev.id}')">تأكيد</button>
+          </div>
+          <div class="error-text" id="pinError">❌ الرقم السري غير صحيح!</div>
+        </div>
+        
+        <div class="warranty-box" id="warrantyBox">
+          <div class="warranty-row"><span>تاريخ الشراء:</span> <span>${dev.purchase_date || '-'}</span></div>
+          <div class="warranty-row"><span>فترة الضمان:</span> <span>${dev.warranty_period || '-'}</span></div>
+          <div class="warranty-row"><span>تاريخ الانتهاء:</span> <span>${dev.warranty_expiry || '-'}</span></div>
+          <div class="warranty-row"><span>حالة الضمان:</span> <span class="status-badge ${warrantyClass}">${warrantyStatus}</span></div>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-back">← العودة للصفحة الرئيسية</a>
+    </div>
+  `;
+}
+
+function checkPin(deviceId) {
+  const enteredPin = document.getElementById('pinInput').value;
+  const errorText = document.getElementById('pinError');
+  const warrantyBox = document.getElementById('warrantyBox');
+  const pinRequest = document.getElementById('pinRequest');
+  const section = document.getElementById('warrantySection');
+
+  if (enteredPin === WARRANTY_PIN) {
+    pinRequest.style.display = 'none';
+    warrantyBox.classList.add('show');
+    section.classList.add('unlocked');
+  } else {
+    errorText.style.display = 'block';
+    document.getElementById('pinInput').value = '';
+  }
+}
+
+function handlePinEnter(event, deviceId) {
+  if (event.key === 'Enter') checkPin(deviceId);
+}
+
+function searchDevice() {
+  const id = document.getElementById('searchInput').value;
+  if (!id) return;
+  const dev = devices.find(d => d.id == id);
+  if (dev) {
+    showDevice(dev);
+  } else {
+    app.style.display = 'none';
+    errorBox.style.display = 'block';
+    errorBox.innerHTML = `<h2>❌ الجهاز غير موجود!</h2><p>تأكد من أن رقم الجهاز (${id}) صحيح.</p>`;
+  }
+}
+
+function handleSearch(e) {
+  if (e.key === 'Enter') searchDevice();
+}
+
+if (urlId) {
+  const dev = devices.find(d => d.id == urlId);
+  if (dev) {
+    showDevice(dev);
+    document.getElementById('searchInput').value = urlId;
+  } else {
+    errorBox.style.display = 'block';
+    errorBox.innerHTML = `<h2>❌ الجهاز غير موجود!</h2><p>رقم الجهاز (${urlId}) غير مسجل.</p>`;
+  }
+} else {
+  errorBox.style.display = 'block';
+  errorBox.innerHTML = `<h2>🔍 ابحث عن جهاز</h2><p>أدخل رقم الجهاز (ID) في الخانة بالأعلى لعرض بياناته.</p>`;
 }
 </script>
 </body>
