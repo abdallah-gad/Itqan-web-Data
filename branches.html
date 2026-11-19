@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفروع | ETQAN + ROSA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0b3d91;
+  --secondary: #c2185b;
+  --bg-dark: #0f172a; 
+  --bg-card: rgba(30, 41, 59, 0.7); 
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-glow: rgba(255, 255, 255, 0.1);
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+body { 
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at 15% 50%, rgba(11, 61, 145, 0.15), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(194, 24, 91, 0.15), transparent 25%);
+  color: var(--text-light); 
+  padding: 20px; 
+  min-height: 100vh; 
+}
+.container { max-width: 1200px; margin: auto; }
+
+/* الهيدر */
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg-card); backdrop-filter: blur(16px);
+  padding: 15px 30px; border-radius: 20px;
+  box-shadow: var(--shadow); margin-bottom: 30px;
+  border: 1px solid var(--border-glow);
+  border-top: 4px solid var(--secondary);
+}
+.logo-area { display: flex; align-items: center; gap: 20px; }
+.logo-img { height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+.header-text h1 { font-size: 24px; color: #fff; font-weight: 900; letter-spacing: 1px;}
+.header-text h2 { font-size: 16px; color: var(--secondary); font-weight: 700; margin-top: 4px;}
+.header-text p { font-size: 12px; color: var(--text-muted); font-weight: 700; letter-spacing: 2px; margin-top: 4px;}
+
+.btn-back-main {
+  background: rgba(255,255,255,0.1); color: #fff; padding: 10px 20px; border-radius: 30px;
+  text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid var(--border-glow);
+  transition: .3s; display: flex; align-items: center; gap: 8px;
+}
+.btn-back-main:hover { background: rgba(255,255,255,0.2); }
+
+/* شبكة الفروع */
+.branches-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 25px; 
+}
+
+.branch-card {
+  background: var(--bg-card); backdrop-filter: blur(10px);
+  border-radius: 20px; padding: 30px 25px;
+  box-shadow: var(--shadow); border: 1px solid var(--border-glow);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: all 0.3s ease; position: relative; overflow: hidden;
+  animation: fadeIn 0.5s ease-out forwards; opacity: 0;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.branch-card:hover { 
+  transform: translateY(-8px); 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+  border-color: rgba(255,255,255,0.3);
+}
+
+.branch-icon {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #1a237e);
+  display: flex; justify-content: center; align-items: center;
+  font-size: 40px; margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(11,61,145,0.4);
+  border: 3px solid var(--border-glow);
+}
+
+.branch-name { font-size: 22px; color: #fff; font-weight: 900; margin-bottom: 10px; }
+
+.branch-count {
+  background: rgba(194, 24, 91, 0.2); color: #ff4081;
+  padding: 8px 20px; border-radius: 12px; font-size: 16px; font-weight: 800;
+  border: 1px solid rgba(194, 24, 91, 0.3); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.branch-count span { font-size: 24px; color: #fff; }
+
+.btn-view {
+  width: 100%; padding: 14px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), #1a237e); color: #fff;
+  text-decoration: none; font-weight: 700; font-size: 15px;
+  transition: .3s; box-shadow: 0 4px 15px rgba(11,61,145,0.4);
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+}
+.btn-view:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(11,61,145,0.6); }
+
+/* التجاوب */
+@media (max-width: 768px) {
+  .main-header { flex-direction: column; text-align: center; gap: 15px; padding: 20px; }
+  .logo-area { flex-direction: column; gap: 10px; }
+  .branches-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="ETQAN + ROSA" class="logo-img" onerror="this.style.display='none';">
+      <div class="header-text">
+        <h1>ETQAN + ROSA</h1>
+        <h2>الفروع</h2>
+        <p>PRECISE MAINTENANCE, SUPERIOR CARE</p>
+      </div>
+    </div>
+    <a href="index.html" class="btn-back-main">← الرئيسية</a>
+  </header>
+
+  <div class="branches-grid" id="branchesGrid"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+function renderBranches() {
+  const grid = document.getElementById('branchesGrid');
+  grid.innerHTML = '';
+
+  // تجميع الأجهزة حسب الفرع
+  const branchMap = {};
+  devices.forEach(dev => {
+    const b = dev.branch ? dev.branch : 'غير محدد';
+    if (!branchMap[b]) branchMap[b] = [];
+    branchMap[b].push(dev);
+  });
+
+  // تحويل الخريطة لمصفوفة وترتيبها أبجدياً
+  const branches = Object.keys(branchMap).sort();
+
+  branches.forEach((branchName, index) => {
+    const count = branchMap[branchName].length;
+    const card = document.createElement('div');
+    card.className = 'branch-card';
+    card.style.animationDelay = `${index * 0.1}s`;
+
+    card.innerHTML = `
+      <div class="branch-icon">🏢</div>
+      <div class="branch-name">${branchName}</div>
+      <div class="branch-count">
+        <span>${count}</span> جهاز
+      </div>
+      <a href="branch-devices.html?branch=${encodeURIComponent(branchName)}" class="btn-view">
+        عرض الأجهزة ←
+      </a>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+renderBranches();
+</script>
+</body>
+</html>
