@@ -39,7 +39,6 @@ body {
 }
 
 .logo-area { display: flex; align-items: center; gap: 20px; }
-.logo-img { height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
 .header-text h1 { font-size: 24px; color: #fff; font-weight: 900; letter-spacing: 1px;}
 .header-text p { font-size: 12px; color: var(--secondary); font-weight: 700; letter-spacing: 2px; margin-top: 4px;}
 
@@ -80,15 +79,18 @@ body {
 .btn-print:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(11,61,145,0.6);}
 
 /* شبكة الأجهزة */
-.devices { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; align-items: start; }
+.devices { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; align-items: stretch; }
 
 .card { 
   background: var(--bg-card); backdrop-filter: blur(10px);
   border-radius: 20px; padding: 25px; 
   box-shadow: var(--shadow); cursor: pointer; 
   transition: all 0.3s ease; border: 1px solid var(--border-glow); 
-  position: relative; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit;
+  position: relative; overflow: hidden; 
+  display: flex; flex-direction: column; /* يخلي البيانات متناسقة فوق بعض */
+  text-decoration: none; color: inherit;
   animation: fadeIn 0.5s ease-out forwards; opacity: 0;
+  height: 100%; /* يخلي كل الكروت بنفس الطول */
 }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -103,54 +105,37 @@ body {
 .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .badge { background: rgba(194, 24, 91, 0.2); color: #ff4081; padding: 6px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; border: 1px solid rgba(194, 24, 91, 0.3);}
 .branch-tag { background: rgba(11, 61, 145, 0.3); color: #64b5f6; padding: 6px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; border: 1px solid rgba(11, 61, 145, 0.5);}
-.card h3 { font-size: 20px; color: #fff; margin-bottom: 20px; border-bottom: 1px solid var(--border-glow); padding-bottom: 15px; font-weight: 900;}
+.card h3 { font-size: 20px; color: #fff; margin-bottom: 20px; border-bottom: 1px solid var(--border-glow); padding-bottom: 15px; font-weight: 900; min-height: 60px;}
 
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; flex-grow: 1; }
 .info-item { font-size: 14px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 6px;}
 .info-item span { color: #fff; font-weight: 800; }
 .info-item.full-width { grid-column: 1 / -1; }
 
 .empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); font-size: 18px; font-weight: 700; }
 
-/* =========================================
-   التجاوب مع الشاشات (Responsive Design)
-   ========================================= */
-
-/* للشاشات المتوسطة (تابلت) */
+/* التجاوب مع الشاشات */
 @media (max-width: 992px) {
-  .stats { grid-template-columns: repeat(2, 1fr); } /* الإحصائيات اتنين في الصف */
-  .search-box { flex: 1 1 100%; } /* مربع البحث ياخد الصف كله */
-  .toolbar select { flex: 1 1 calc(50% - 10px); } /* الفلاتر اتنين في الصف */
-  .btn-print { flex: 1 1 100%; } /* زرار الطباعة ياخد الصف كله */
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .search-box { flex: 1 1 100%; }
+  .toolbar select { flex: 1 1 calc(50% - 10px); }
+  .btn-print { flex: 1 1 100%; }
 }
 
-/* للشاشات الصغيرة (موبايل) */
 @media (max-width: 768px) {
   body { padding: 10px; }
-  
-  /* الهيدر يترتب فوق بعض */
   .main-header { flex-direction: column; text-align: center; gap: 15px; padding: 20px; }
   .logo-area { flex-direction: column; gap: 10px; }
-  .logo-img { height: 60px; }
   .header-text h1 { font-size: 20px; }
   .date-badge { font-size: 12px; padding: 8px 15px; }
-
-  /* الإحصائيات واحد في الصف */
   .stats { grid-template-columns: 1fr; gap: 15px; }
-  
-  /* الفلاتر واحد في الصف */
   .toolbar select { flex: 1 1 100%; }
-  
-  /* الكروت واحد في الصف */
   .devices { grid-template-columns: 1fr; }
   .card { padding: 20px; }
-  
-  /* تصغير الخطوط شوية */
   .card h3 { font-size: 18px; }
   .stat-info span { font-size: 24px; }
 }
 
-/* للطباعة */
 @media print {
   body { background: #fff; color: #000; }
   .main-header, .toolbar, .stats, .btn-print { display: none !important; }
@@ -165,9 +150,8 @@ body {
 <div class="container">
   <header class="main-header">
     <div class="logo-area">
-      <img src="logo.png" alt="ETQAN + ROSA" class="logo-img">
       <div class="header-text">
-        <h1>نظام توزيع الأجهزة</h1>
+        <h1>ETQAN + ROSA</h1>
         <p>PRECISE MAINTENANCE, SUPERIOR CARE</p>
       </div>
     </div>
@@ -206,7 +190,7 @@ function renderStats() {
 }
 
 function fillFilters() {
-  const branches = [...new Set(devices.map(d => d.branch))].sort();
+  const branches = [...new Set(devices.map(d => d.branch).filter(Boolean))].sort();
   const models = [...new Set(devices.map(d => d.model).filter(Boolean))].sort();
   const powers = [...new Set(devices.map(d => d.type).filter(Boolean))].sort();
   document.getElementById('filterBranch').innerHTML += branches.map(b => `<option value="${b}">${b}</option>`).join('');
@@ -247,7 +231,7 @@ function renderDevices(list) {
     card.innerHTML = `
       <div class="card-head">
         <span class="badge">ID: ${dev.id}</span>
-        <span class="branch-tag">${dev.branch}</span>
+        <span class="branch-tag">${dev.branch || 'غير محدد'}</span>
       </div>
       <h3>${dev.name}</h3>
       <div class="info-grid">
