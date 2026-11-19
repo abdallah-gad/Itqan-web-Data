@@ -82,14 +82,29 @@ body {
 
 /* إحصائيات */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-.stat { background: var(--bg-card); backdrop-filter: blur(10px); padding: 25px; border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; border-right: 4px solid var(--primary); border: 1px solid var(--border-glow); transition: transform 0.3s ease; }
-.stat:hover { transform: translateY(-5px); border-color: var(--primary); }
+.stat { 
+  background: var(--bg-card); backdrop-filter: blur(10px); padding: 25px; border-radius: 16px; 
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; 
+  border-right: 4px solid var(--primary); border: 1px solid var(--border-glow); 
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; 
+  cursor: pointer; /* عشان يبان إنه بيتداس عليه */
+}
+.stat:hover { 
+  transform: translateY(-5px) scale(1.02); 
+  border-color: var(--secondary); 
+  box-shadow: 0 8px 25px rgba(194, 24, 91, 0.3);
+}
 .stat-icon { font-size: 32px; }
 .stat-info span { display: block; font-size: 30px; font-weight: 900; color: #fff; line-height: 1; }
 .stat-info label { font-size: 14px; color: var(--text-muted); margin-top: 6px; display: block; font-weight: 600;}
 
 /* أدوات البحث */
-.toolbar { display: flex; gap: 15px; flex-wrap: wrap; background: var(--bg-card); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 30px; align-items: center; border: 1px solid var(--border-glow); }
+.toolbar { 
+  display: none; /* مخفي في البداية */
+  gap: 15px; flex-wrap: wrap; background: var(--bg-card); backdrop-filter: blur(10px); 
+  padding: 20px; border-radius: 16px; box-shadow: var(--shadow); 
+  margin-bottom: 30px; align-items: center; border: 1px solid var(--border-glow); 
+}
 .search-box { position: relative; flex: 2; min-width: 250px; }
 .search-box .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px;}
 .search-box input { width: 100%; padding: 15px 45px 15px 20px; border: 1px solid var(--border-glow); border-radius: 12px; font-family: 'Cairo'; font-size: 15px; background: rgba(15, 23, 42, 0.6); color: #fff; transition: all 0.3s; }
@@ -174,13 +189,16 @@ body {
         <p>PRECISE MAINTENANCE, SUPERIOR CARE</p>
       </div>
     </div>
-    <div class="date-badge" id="currentDate"></div>
-    <a href="branches.html" style="background: rgba(255,255,255,0.1); color: #fff; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid var(--border-glow); transition: .3s; display: flex; align-items: center; gap: 8px; margin-left: 10px;">🏢 الفروع</a>
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;">
+      <div class="date-badge" id="currentDate"></div>
+      <a href="branches.html" style="background: rgba(255,255,255,0.1); color: #fff; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid var(--border-glow); transition: .3s; display: flex; align-items: center; gap: 8px;">🏢 الفروع</a>
+    </div>
   </header>
 
   <div class="stats" id="stats"></div>
 
-  <div class="toolbar">
+  <!-- شريط البحث (مخفي في البداية) -->
+  <div class="toolbar" id="searchToolbar">
     <div class="search-box">
       <span class="search-icon">🔍</span>
       <input type="text" id="search" placeholder="ابحث برقم الكود (ID)، الاسم، أو الموديل..." oninput="applyFilter()">
@@ -209,9 +227,7 @@ function checkLogin() {
   if (enteredPin === ADMIN_PIN) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
-    // حفظ حالة الدخول عشان لو عمل تحديث للصفحة ميطالبوش بالباسورد تاني
     sessionStorage.setItem('isLoggedIn', 'true');
-    // تشغيل الصفحة بعد الدخول
     initPage();
   } else {
     errorText.style.display = 'block';
@@ -245,7 +261,10 @@ function initPage() {
 function renderStats() {
   const branches = [...new Set(devices.map(d => d.branch))];
   document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-icon">🖥️</div><div class="stat-info"><span>${devices.length}</span><label>إجمالي الأجهزة</label></div></div>
+    <div class="stat" onclick="toggleSearch()">
+      <div class="stat-icon">🖥️</div>
+      <div class="stat-info"><span>${devices.length}</span><label>إجمالي الأجهزة</label></div>
+    </div>
     <div class="stat"><div class="stat-icon">🏢</div><div class="stat-info"><span>${branches.length}</span><label>الفروع</label></div></div>
     <div class="stat"><div class="stat-icon">⚙️</div><div class="stat-info"><span>${devices.filter(d => d.type.includes('2')).length}</span><label>2 هيد</label></div></div>
     <div class="stat"><div class="stat-icon">🔧</div><div class="stat-info"><span>${devices.filter(d => d.type.includes('4')).length}</span><label>4 هيد</label></div></div>
@@ -259,6 +278,25 @@ function fillFilters() {
   document.getElementById('filterBranch').innerHTML += branches.map(b => `<option value="${b}">${b}</option>`).join('');
   document.getElementById('filterModel').innerHTML += models.map(m => `<option value="${m}">${m}</option>`).join('');
   document.getElementById('filterPower').innerHTML += powers.map(p => `<option value="${p}">${p}</option>`).join('');
+}
+
+// ==========================================
+// 3. دالة إظهار وإخفاء شريط البحث
+// ==========================================
+function toggleSearch() {
+  const toolbar = document.getElementById('searchToolbar');
+  if (toolbar.style.display === 'none' || toolbar.style.display === '') {
+    toolbar.style.display = 'flex'; // نظهره
+    document.getElementById('search').focus(); // نركز على خانة البحث
+  } else {
+    toolbar.style.display = 'none'; // نخفيه
+    // تصفير القيم عشان لما يظهر تاني يكون نضيف
+    document.getElementById('search').value = '';
+    document.getElementById('filterBranch').value = '';
+    document.getElementById('filterModel').value = '';
+    document.getElementById('filterPower').value = '';
+    applyFilter(); // نرجع الأجهزة كلها
+  }
 }
 
 function applyFilter() {
