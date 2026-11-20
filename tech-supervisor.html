@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة مشرف التكنشن | ETQAN + ROSA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0b3d91;
+  --secondary: #c2185b;
+  --bg-dark: #0f172a; 
+  --bg-card: rgba(30, 41, 59, 0.7); 
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-glow: rgba(255, 255, 255, 0.1);
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+body { 
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at 15% 50%, rgba(11, 61, 145, 0.15), transparent 25%),
+                    radial-gradient(circle at 85% 30%, rgba(194, 24, 91, 0.15), transparent 25%);
+  color: var(--text-light); 
+  padding: 20px; 
+  min-height: 100vh; 
+}
+
+/* شاشة القفل */
+#pinScreen {
+  position: fixed; inset: 0; background: var(--bg-dark);
+  display: flex; justify-content: center; align-items: center; z-index: 9999;
+  padding: 20px;
+}
+.pin-box {
+  background: var(--bg-card); backdrop-filter: blur(16px);
+  padding: 40px; border-radius: 24px; width: 100%; max-width: 400px;
+  box-shadow: var(--shadow); border: 1px solid var(--border-glow);
+  border-top: 5px solid var(--secondary); text-align: center;
+  animation: popIn 0.5s ease-out;
+}
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.pin-box h2 { color: #fff; font-size: 24px; margin-bottom: 10px; }
+.pin-box p { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; }
+.pin-box input {
+  width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border-glow);
+  background: rgba(15, 23, 42, 0.6); color: #fff; font-size: 20px; text-align: center;
+  letter-spacing: 10px; font-weight: bold; margin-bottom: 15px; font-family: 'Cairo';
+}
+.pin-box input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(11,61,145,0.3); }
+.pin-box button {
+  width: 100%; padding: 15px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), #1a237e); color: #fff;
+  font-family: 'Cairo'; font-weight: 700; font-size: 16px; cursor: pointer;
+  transition: .3s; box-shadow: 0 4px 15px rgba(11,61,145,0.4);
+}
+.pin-box button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(11,61,145,0.6); }
+.pin-error { color: #ff4081; font-size: 14px; font-weight: 700; margin-top: 10px; display: none; }
+
+/* المحتوى الرئيسي */
+#mainContent { display: none; max-width: 1400px; margin: auto; }
+
+/* الهيدر */
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg-card); backdrop-filter: blur(16px);
+  padding: 15px 30px; border-radius: 20px;
+  box-shadow: var(--shadow); margin-bottom: 30px;
+  border: 1px solid var(--border-glow);
+  border-top: 4px solid var(--secondary);
+}
+.logo-area { display: flex; align-items: center; gap: 20px; }
+.logo-img { height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+.header-text h1 { font-size: 24px; color: #fff; font-weight: 900; letter-spacing: 1px;}
+.header-text h2 { font-size: 16px; color: var(--secondary); font-weight: 700; margin-top: 4px;}
+.header-text p { font-size: 12px; color: var(--text-muted); font-weight: 700; letter-spacing: 2px; margin-top: 4px;}
+
+/* أدوات البحث والفلترة */
+.toolbar { display: flex; gap: 15px; flex-wrap: wrap; background: var(--bg-card); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 30px; align-items: center; border: 1px solid var(--border-glow); }
+.search-box { position: relative; flex: 2; min-width: 250px; }
+.search-box .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px;}
+.search-box input { width: 100%; padding: 15px 45px 15px 20px; border: 1px solid var(--border-glow); border-radius: 12px; font-family: 'Cairo'; font-size: 15px; background: rgba(15, 23, 42, 0.6); color: #fff; transition: all 0.3s; }
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(11,61,145,0.3); }
+
+/* شبكة الأجهزة */
+.devices { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; align-items: stretch; }
+.card { background: var(--bg-card); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-glow); position: relative; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; animation: fadeIn 0.5s ease-out forwards; opacity: 0; height: 100%; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.3); background: rgba(30, 41, 59, 0.9); }
+.card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.badge { background: rgba(194, 24, 91, 0.2); color: #ff4081; padding: 6px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; border: 1px solid rgba(194, 24, 91, 0.3);}
+.branch-tag { background: rgba(11, 61, 145, 0.3); color: #64b5f6; padding: 6px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; border: 1px solid rgba(11, 61, 145, 0.5);}
+.card h3 { font-size: 20px; color: #fff; margin-bottom: 20px; border-bottom: 1px solid var(--border-glow); padding-bottom: 15px; font-weight: 900; min-height: 60px;}
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; flex-grow: 1; }
+.info-item { font-size: 14px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 6px;}
+.info-item span { color: #fff; font-weight: 800; }
+.info-item.full-width { grid-column: 1 / -1; }
+.empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); font-size: 18px; font-weight: 700; }
+
+/* التجاوب */
+@media (max-width: 768px) {
+  .main-header { flex-direction: column; text-align: center; gap: 15px; padding: 20px; }
+  .logo-area { flex-direction: column; gap: 10px; }
+  .devices { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="pinScreen">
+  <div class="pin-box">
+    <h2>🔒 لوحة مشرف التكنشن</h2>
+    <p id="branchNameText">جاري التحقق...</p>
+    <input type="password" id="techPin" placeholder="****" maxlength="6" onkeypress="handlePinEnter(event)">
+    <button onclick="checkTechPin()">دخول</button>
+    <div class="pin-error" id="pinError">❌ الرقم السري غير صحيح!</div>
+  </div>
+</div>
+
+<div id="mainContent">
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="ETQAN + ROSA" class="logo-img" onerror="this.style.display='none';">
+      <div class="header-text">
+        <h1>ETQAN + ROSA</h1>
+        <h2>لوحة مشرف التكنشن</h2>
+        <p>PRECISE MAINTENANCE, SUPERIOR CARE</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="branch-title" id="branchTitle" style="background: var(--bg-card); padding: 20px; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 30px; text-align: center; border: 1px solid var(--border-glow); border-right: 5px solid var(--secondary);">
+    <!-- عنوان الفرع هيظهر هنا -->
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="ابحث برقم الكود (ID)، الاسم، أو اسم التكنشن..." oninput="applyFilter()">
+    </div>
+  </div>
+
+  <div class="devices" id="devices"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+// ==========================================
+// 1. إعدادات مشرفي التكنشن (كل مشرف وله فرع واحد و PIN)
+// ==========================================
+const TECH_SUPERVISORS = {
+  "منصورة": { pin: "1111", name: "م / ابراهيم", branch: "المنصورة" },
+  "طنطا": { pin: "2222", name: "م / فاطمة", branch: "طنطا" },
+  "كفر الشيخ": { pin: "3333", name: "م / منه", branch: "كفر الشيخ" },
+  "دمياط": { pin: "4444", name: "م / سيد", branch: "دمياط الجديده" },
+  "العجمي": { pin: "5555", name: "مشرف تكنشن العجمي", branch: "العجمي" },
+  "المحلة": { pin: "6666", name: "م / اميرة", branch: "المحلة" },
+  "شبين": { pin: "7777", name: "مشرف تكنشن شبين الكوم", branch: "شبين الكوم" },
+  "جليم": { pin: "8888", name: "مشرف تكنشن جليم", branch: "جليم" }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const techId = urlParams.get('tech'); // بنجيب اسم الفرع من الرابط
+let currentTechSup = null;
+let techDevices = [];
+
+// التحقق من وجود مشرف في الرابط
+if (techId && TECH_SUPERVISORS[techId]) {
+  currentTechSup = TECH_SUPERVISORS[techId];
+  document.getElementById('branchNameText').textContent = `${currentTechSup.name} - أدخل الرقم السري`;
+} else {
+  document.getElementById('branchNameText').textContent = '❌ خطأ: رابط غير صالح';
+  document.getElementById('techPin').disabled = true;
+}
+
+// دالة التحقق من الـ PIN
+function checkTechPin() {
+  const enteredPin = document.getElementById('techPin').value;
+  const errorText = document.getElementById('pinError');
+  
+  if (currentTechSup && enteredPin === currentTechSup.pin) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    sessionStorage.setItem('loggedTech', techId);
+    initPage();
+  } else {
+    errorText.style.display = 'block';
+    document.getElementById('techPin').value = '';
+  }
+}
+
+function handlePinEnter(event) {
+  if (event.key === 'Enter') checkTechPin();
+}
+
+// التحقق من إنه سجل دخول قبل كده
+if (techId && TECH_SUPERVISORS[techId] && sessionStorage.getItem('loggedTech') === techId) {
+  currentTechSup = TECH_SUPERVISORS[techId];
+  document.getElementById('pinScreen').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  initPage();
+}
+
+// ==========================================
+// 2. تشغيل الصفحة
+// ==========================================
+function initPage() {
+  // فلترة الأجهزة بناءً على فرع المشرف
+  techDevices = devices.filter(d => d.branch === currentTechSup.branch);
+  
+  document.getElementById('branchTitle').innerHTML = `
+    <h1 style="color: #fff; font-size: 24px; margin-bottom: 5px;">🏢 ${currentTechSup.branch}</h1>
+    <p style="color: var(--text-muted); font-size: 14px;">عدد الأجهزة: ${techDevices.length}</p>
+  `;
+
+  renderDevices(techDevices);
+}
+
+function renderDevices(list) {
+  const container = document.getElementById('devices');
+  container.innerHTML = '';
+  
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty">لا توجد أجهزة في هذا الفرع</div>';
+    return;
+  }
+
+  list.forEach((dev, index) => {
+    const card = document.createElement('a');
+    card.className = 'card';
+    card.style.animationDelay = `${index * 0.05}s`;
+    card.href = `device.html?id=${dev.id}`; 
+    
+    card.innerHTML = `
+      <div class="card-head">
+        <span class="badge">ID: ${dev.id}</span>
+        <span class="branch-tag">${dev.branch || 'غير محدد'}</span>
+      </div>
+      <h3>${dev.name}</h3>
+      <div class="info-grid">
+        <div class="info-item">⚡ <b>القوة:</b> <span>${dev.type}</span></div>
+        <div class="info-item">⚙️ <b>الموديل:</b> <span>${dev.model}</span></div>
+        <div class="info-item">🌅 <b>تكنشن صباحي:</b> <span>${dev.morning_tech || '-'}</span></div>
+        <div class="info-item">🌙 <b>تكنشن مسائي:</b> <span>${dev.evening_tech || '-'}</span></div>
+        <div class="info-item full-width">🧩 <b>البرتشن:</b> <span>${dev.partition}</span></div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function applyFilter() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  
+  if (!q) {
+    renderDevices(techDevices);
+    return;
+  }
+
+  const filtered = techDevices.filter(d => {
+    const hay = `${d.id} ${d.name} ${d.type} ${d.model} ${d.partition} ${d.branch} ${d.morning_tech} ${d.evening_tech}`.toLowerCase();
+    return hay.includes(q);
+  });
+  
+  renderDevices(filtered);
+}
+</script>
+</body>
+</html>
