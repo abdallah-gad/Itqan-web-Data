@@ -114,7 +114,7 @@ body {
 <div id="pinScreen">
   <div class="pin-box">
     <h2>🔒 لوحة مشرف التكنشن</h2>
-    <p id="branchNameText">جاري التحقق...</p>
+    <div id="branchNameText" style="margin-bottom: 25px;">جاري التحقق...</div>
     <input type="password" id="techPin" placeholder="****" maxlength="6" onkeypress="handlePinEnter(event)">
     <button onclick="checkTechPin()">دخول</button>
     <div class="pin-error" id="pinError">❌ الرقم السري غير صحيح!</div>
@@ -171,7 +171,10 @@ let techDevices = [];
 // التحقق من وجود مشرف في الرابط
 if (techId && TECH_SUPERVISORS[techId]) {
   currentTechSup = TECH_SUPERVISORS[techId];
-  document.getElementById('branchNameText').textContent = `${currentTechSup.name} - أدخل الرقم السري`;
+  document.getElementById('branchNameText').innerHTML = `
+    <span style="display: block; font-size: 18px; color: #fff; font-weight: 700; margin-bottom: 5px;">${currentTechSup.name}</span>
+    <span style="display: block; font-size: 14px; color: var(--secondary); font-weight: 600;">فرع: ${currentTechSup.branch}</span>
+  `;
 } else {
   document.getElementById('branchNameText').textContent = '❌ خطأ: رابط غير صالح';
   document.getElementById('techPin').disabled = true;
